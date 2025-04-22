@@ -167,7 +167,7 @@
         rented_till: document.getElementById('rentedTill').value
       };
 
-      const { data, error } = await supabase.from('members').insert([formData]);
+      const { data, error } = await supabase.from('member').insert([formData]);
 
       const feedback = document.createElement('div');
       feedback.className = 'mt-4 p-3 rounded text-sm text-white';
