@@ -139,22 +139,35 @@
     </div>
   </div>
 
-  <script>
-    document.getElementById('memberForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      const formData = {
-        name: document.getElementById('name').value,
-        phone: document.getElementById('phone').value,
-        address: document.getElementById('address').value,
-        rentedAmount: document.getElementById('rentedAmount').value,
-        rentedFrom: document.getElementById('rentedFrom').value,
-        rentedTill: document.getElementById('rentedTill').value
-      };
-      
-      console.log('Form submitted:', formData);
-      // Here you would typically send the data to a server
-    });
-  </script>
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+
+  const supabase = createClient('https://jpihbpeqhbdmterdwtmt.supabase.co ', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpwaWhicGVxaGJkbXRlcmR3dG10Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUzNTcwMjksImV4cCI6MjA2MDkzMzAyOX0.hMr_JbDyKDQiUW6t1VefVv-gNZHpSk0GMgASfpJzuig
+'); // Replace these
+
+  document.getElementById('memberForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = {
+      name: document.getElementById('name').value,
+      phone_number: Number(document.getElementById('phone').value),
+      address: document.getElementById('address').value,
+      rented_amount: Number(document.getElementById('rentedAmount').value),
+      rented_from: document.getElementById('rentedFrom').value,
+      rented_till: document.getElementById('rentedTill').value
+    };
+
+    const { data, error } = await supabase.from('members').insert([formData]);
+
+    if (error) {
+      alert('❌ Error adding member: ' + error.message);
+      console.error(error);
+    } else {
+      alert('✅ Member added successfully!');
+      e.target.reset(); // Clear the form
+    }
+  });
+</script>
+
 </body>
 </html>
